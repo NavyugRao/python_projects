@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flash Word Reader</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background-color: #0d1117;
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #controls {
+      padding: 1rem;
+      background-color: #161b22;
+      text-align: center;
+    }
+
+    textarea {
+      width: 80%;
+      height: 120px;
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    input[type="number"] {
+      width: 80px;
+      font-size: 1rem;
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    #display {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10vw;
+      text-align: center;
+      padding: 1rem;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <h1>Flash Word Reader</h1>
+    <textarea id="inputText" placeholder="Paste or type your text here..."></textarea><br/>
+    <label for="speed">Speed (WPM): </label>
+    <input type="number" id="speed" value="400" min="50" max="2000" /> <br/>
+    <button onclick="startFlashing()">Start</button>
+  </div>
+
+  <div id="display"></div>
+
+  <script>
+    let flashInterval;
+
+    function startFlashing() {
+      const text = document.getElementById('inputText').value.trim();
+      const speed = parseInt(document.getElementById('speed').value);
+      const words = text.split(/\s+/);
+      const display = document.getElementById('display');
+      let i = 0;
+
+      clearInterval(flashInterval); // Reset if already running
+
+      const delay = 60000 / speed; // WPM to delay in ms
+
+      flashInterval = setInterval(() => {
+        if (i < words.length) {
+          display.textContent = words[i];
+          i++;
+        } else {
+          clearInterval(flashInterval);
+          display.textContent = "Done!";
+        }
+      }, delay);
+    }
+  </script>
+</body>
+</html>
